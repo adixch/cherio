@@ -1,0 +1,44 @@
+---
+interface Props {
+    element: 'input' | 'textarea';
+    id: string;
+    type?: 'text' | 'email' | 'password' | 'tel' | 'url' | 'number' | 'hidden';
+    name: string;
+    placeholder?: string;
+    required?: boolean;
+    rows?: number;
+}
+
+const {
+    element,
+    id,
+    type = 'text',
+    name,
+    placeholder,
+    required = false,
+    rows = 6,
+} = Astro.props;
+---
+
+{
+    element === 'input' ? (
+        <input
+            class="theme-input"
+            id={id}
+            type={type}
+            name={name}
+            placeholder={placeholder}
+            required={required}
+        />
+    ) : (
+        <textarea
+            class="theme-input"
+            id={id}
+            name={name}
+            placeholder={placeholder}
+            required={required}
+            rows={rows}
+            cols={30}
+        />
+    )
+}

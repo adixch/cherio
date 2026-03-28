@@ -1,0 +1,39 @@
+---
+interface Props {
+    label: string;
+    title: string;
+    description: string;
+    showOnMobile?: boolean;
+    class?: string;
+}
+
+const {
+    label,
+    title,
+    description,
+    showOnMobile = true,
+    class: className = '',
+} = Astro.props;
+---
+
+<div class:list={['text-block flex flex-col gap-4', className]}>
+    <div class="flex basis-1/2 flex-col justify-end gap-8 md:gap-4">
+        <label class="text-block__label">{label}</label>
+        <h2
+            class:list={[
+                'text-block__headline leading-10 font-bold uppercase transition-all duration-300 ease-in-out',
+                !showOnMobile && 'max-md:hidden',
+            ]}
+        >
+            {title}
+        </h2>
+    </div>
+    <p
+        class:list={[
+            'text-block__desc transition-all duration-300 ease-in-out md:basis-7/12 lg:basis-1/2',
+            !showOnMobile && 'max-md:hidden',
+        ]}
+    >
+        {description}
+    </p>
+</div>

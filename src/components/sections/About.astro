@@ -1,0 +1,117 @@
+---
+import TextBlock from '../TextBlock.astro';
+
+const team = [
+    {
+        name: 'Adrian',
+        title: 'developer',
+        description:
+            'Former programmer whose passion is testing. Main competences are: QA, JS, SQL and analytics',
+        img: '/img/avatars/adi.png',
+    },
+    {
+        name: 'Mateusz',
+        title: 'quality assurance',
+        description:
+            'Former programmer whose passion is testing. Main competences are: QA, JS, SQL and analytics',
+        img: '/img/avatars/mati.png',
+    },
+    {
+        name: 'Zuza',
+        title: 'ux/ui designer',
+        description:
+            'Former programmer whose passion is testing. Main competences are: QA, JS, SQL and analytics',
+        img: '/img/avatars/zuza.png',
+    },
+    {
+        name: 'Patryk',
+        title: 'seo specialist',
+        description:
+            'Former programmer whose passion is testing. Main competences are: QA, JS, SQL and analytics',
+        img: '/img/avatars/patrick.png',
+    },
+];
+---
+
+<section
+    id="about"
+    class="section flex w-full flex-col gap-8 md:flex-row md:justify-center md:pr-6 lg:gap-12 lg:pr-10"
+>
+    <div
+        class="team-grid order-2 justify-items-center overflow-auto overflow-y-hidden md:order-1 md:basis-7/12 md:overflow-visible"
+    >
+        {
+            team.map((member, index) => (
+                <div
+                    class:list={[
+                        'team-member team-member-gradient md:cursor-pointer',
+                        index < 2 && 'self-end',
+                        index % 2 !== 0
+                            ? 'md:top-14 2xl:top-20'
+                            : 'justify-self-end',
+                    ]}
+                    data-team-member
+                >
+                    <div class="team-card bg-surface flex h-full flex-col overflow-hidden">
+                        <img
+                            src={member.img}
+                            alt={`${member.name} - ${member.title}`}
+                            class="team-card__image max-h-[60%] object-contain object-top pt-5 lg:max-h-[65%]"
+                            loading="lazy"
+                        />
+                        <div class="team-card__info px-6">
+                            <h3 class="team-card__name">{member.name}</h3>
+                            <span class="team-card__title">{member.title}</span>
+                            <p class="mt-2 text-sm">{member.description}</p>
+                        </div>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+
+    <TextBlock
+        label="our team"
+        title="who we are?"
+        description="We're not some big fancy company. Just a small group of ambitious people with one goal: Creating the best damn products on earth."
+        showOnMobile={true}
+        class="flex flex-col justify-center gap-4 md:order-2 md:basis-5/12"
+    />
+</section>
+
+<script>
+    // Animated gradient border on hover (replaces react-parallax-tilt + requestAnimationFrame approach)
+    let angle = 0;
+    let animId: number | undefined;
+    let lastTime: number | undefined;
+
+    function animateGradient(time: number) {
+        if (lastTime != null) {
+            const delta = time - lastTime;
+            angle += delta * 0.1;
+            if (angle >= 360) angle = 0;
+            document.documentElement.style.setProperty(
+                '--angle',
+                `${angle}deg`
+            );
+        }
+        lastTime = time;
+        animId = requestAnimationFrame(animateGradient);
+    }
+
+    document.querySelectorAll('[data-team-member]').forEach((el) => {
+        el.addEventListener('mouseenter', () => {
+            if (!animId) {
+                lastTime = undefined;
+                animId = requestAnimationFrame(animateGradient);
+            }
+        });
+
+        el.addEventListener('mouseleave', () => {
+            if (animId) {
+                cancelAnimationFrame(animId);
+                animId = undefined;
+            }
+        });
+    });
+</script>

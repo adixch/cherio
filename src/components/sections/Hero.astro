@@ -1,0 +1,31 @@
+---
+import Button from '../Button.astro';
+---
+
+<section
+    id="home"
+    class="section flex h-screen w-full flex-col items-center justify-center gap-10"
+>
+    <div
+        class="h-[50px] w-full bg-[url('/img/logo.svg')] bg-contain bg-center bg-no-repeat md:h-[60px] lg:h-[80px] 2xl:h-[100px]"
+        role="img"
+        aria-label="Cherio logo"
+    >
+    </div>
+    <Button
+        variant="primary"
+        size="lg"
+        ariaLabel="go to contact section"
+        id="hero-cta"
+    >
+        CONTACT US
+    </Button>
+</section>
+
+<script>
+    document.getElementById('hero-cta')?.addEventListener('click', () => {
+        document
+            .getElementById('contact')
+            ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+</script>

@@ -1,0 +1,68 @@
+---
+const sectionIds = ['home', 'services', 'about', 'contact'];
+---
+
+<div
+    id="right-menu"
+    class="fixed top-[60px] right-5 z-40 hidden h-[calc(100vh-60px)] w-[70px] flex-col items-center justify-center gap-8 md:flex"
+>
+    {
+        sectionIds.map((id, index) => (
+            <div
+                class="number-menu-item before:ease after:ease flex cursor-pointer flex-row items-center justify-center gap-3 before:h-[1px] before:w-0 before:bg-white before:transition-all before:duration-150 after:h-[1px] after:w-0 after:bg-white after:transition-all after:duration-150"
+                data-menu-index={index}
+                data-menu-section={id}
+            >
+                {index + 1}
+            </div>
+        ))
+    }
+</div>
+
+<script>
+    const menuItems = document.querySelectorAll('[data-menu-section]');
+    const container = document.getElementById('container')!;
+    const sections = document.querySelectorAll('.section');
+
+    // Click to scroll
+    menuItems.forEach((item) => {
+        item.addEventListener('click', () => {
+            const sectionId = (item as HTMLElement).dataset.menuSection!;
+            const target = document.getElementById(sectionId);
+            target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // Update active state on scroll
+    function updateActiveNumber() {
+        const sectionElements = Array.from(sections);
+        let activeIndex = 0;
+
+        for (let i = sectionElements.length - 1; i >= 0; i--) {
+            const rect = sectionElements[i].getBoundingClientRect();
+            if (rect.top <= 150) {
+                activeIndex = i;
+                break;
+            }
+        }
+
+        menuItems.forEach((item, index) => {
+            if (index === activeIndex) {
+                item.classList.add(
+                    'number-menu-item--active',
+                    'before:!w-4',
+                    'after:!w-4'
+                );
+            } else {
+                item.classList.remove(
+                    'number-menu-item--active',
+                    'before:!w-4',
+                    'after:!w-4'
+                );
+            }
+        });
+    }
+
+    container.addEventListener('scroll', updateActiveNumber);
+    updateActiveNumber();
+</script>

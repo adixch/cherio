@@ -1,0 +1,117 @@
+---
+import TextBlock from '../TextBlock.astro';
+import Button from '../Button.astro';
+import Input from '../Input.astro';
+import Footer from '../Footer.astro';
+---
+
+<section
+    id="contact"
+    class="section flex w-full flex-col justify-center max-md:gap-40"
+>
+    <div
+        class="flex grow flex-col gap-8 md:flex-row md:justify-center md:pr-6 lg:gap-16 lg:pr-10 2xl:gap-32 2xl:pr-20"
+    >
+        <TextBlock
+            label="contact"
+            title={'No fear!\nWe are here!'}
+            description="If you are looking for an individual solution - we are here to help. Leave your e-mail or write a specific message and we will contact you within 24 hours!"
+            showOnMobile={true}
+            class="flex basis-full flex-col justify-center gap-4 md:basis-1/2"
+        />
+
+        <div class="flex basis-full flex-col justify-center gap-4 md:basis-1/2">
+            <p id="form-error" class="hidden font-black text-red-600"></p>
+            <form
+                id="contact-form"
+                class="flex w-full flex-col gap-8 md:gap-4"
+                action="https://api.web3forms.com/submit"
+                method="POST"
+            >
+                <input
+                    type="hidden"
+                    name="access_key"
+                    value="YOUR_WEB3FORMS_ACCESS_KEY"
+                />
+                <Input
+                    element="input"
+                    id="name"
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    required
+                />
+                <Input
+                    element="input"
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                />
+                <Input
+                    element="textarea"
+                    id="message"
+                    name="message"
+                    placeholder="Message"
+                    required
+                />
+                <Button
+                    variant="secondary"
+                    size="md"
+                    type="submit"
+                    ariaLabel="send email to us"
+                    class="mt-4 self-center"
+                >
+                    contact us
+                </Button>
+            </form>
+        </div>
+    </div>
+    <Footer />
+</section>
+
+<script>
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const errorEl = document.getElementById('form-error')!;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorEl.classList.add('hidden');
+
+        const formData = new FormData(form);
+        const email = formData.get('email') as string;
+
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            errorEl.textContent = 'Email is invalid!';
+            errorEl.classList.remove('hidden');
+            return;
+        }
+
+        const submitBtn = form.querySelector(
+            'button[type="submit"]'
+        ) as HTMLButtonElement;
+        submitBtn.disabled = true;
+
+        try {
+            const response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                form.reset();
+                alert('Message sent successfully!');
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            errorEl.textContent =
+                error instanceof Error ? error.message : 'Something went wrong';
+            errorEl.classList.remove('hidden');
+        } finally {
+            submitBtn.disabled = false;
+        }
+    });
+</script>

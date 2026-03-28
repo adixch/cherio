@@ -1,0 +1,101 @@
+---
+const navItems = [
+    { name: 'Home', section: 'home' },
+    { name: 'Services', section: 'services' },
+    { name: 'About', section: 'about' },
+    { name: 'Contact', section: 'contact' },
+];
+---
+
+<header
+    id="nav-header"
+    class="fixed z-40 flex w-full items-center py-5 leading-5 uppercase transition-all duration-300 ease-in-out md:tracking-[0.15rem]"
+>
+    <nav
+        class="w-full px-4 text-[14px] md:ml-0 md:h-auto md:px-5 md:text-[16px]"
+    >
+        <ul class="flex flex-row items-center justify-between md:gap-8">
+            {
+                navItems.map((item, index) => (
+                    <li
+                        class:list={[
+                            'nav-item relative cursor-pointer',
+                            index === 0 && '',
+                            index === 1 && 'md:flex md:grow md:justify-end',
+                            index === 2 && 'md:grow',
+                            index === 3 && 'text-right md:w-[160px]',
+                        ]}
+                        data-section={item.section}
+                        data-index={index}
+                    >
+                        <a class="cursor-pointer" data-nav-link={item.section}>
+                            {index === 0 ? (
+                                <div class="h-5 bg-[url('/img/logo_mobile.png')] bg-contain bg-center bg-no-repeat max-[640px]:w-[32px] sm:w-[160px] sm:bg-[url('/img/logo.svg')]" />
+                            ) : (
+                                item.name
+                            )}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </nav>
+</header>
+
+<script>
+    const header = document.getElementById('nav-header')!;
+    const navLinks = document.querySelectorAll('[data-nav-link]');
+    const sections = document.querySelectorAll('.section');
+    const container = document.getElementById('container')!;
+
+    // Navigation click handling
+    navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+            const sectionId = (link as HTMLElement).dataset.navLink!;
+            const target = document.getElementById(sectionId);
+            if (!target) return;
+
+            if (window.innerWidth >= 768) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Active state + backdrop on scroll
+    function updateNav() {
+        const scrollY = container.scrollTop || window.scrollY;
+
+        // Backdrop
+        if (scrollY > 200) {
+            header.classList.add('bg-[#00000070]', 'backdrop-blur-sm');
+        } else {
+            header.classList.remove('bg-[#00000070]', 'backdrop-blur-sm');
+        }
+
+        // Active section detection
+        const sectionElements = Array.from(sections);
+        let activeIndex = 0;
+
+        for (let i = sectionElements.length - 1; i >= 0; i--) {
+            const rect = sectionElements[i].getBoundingClientRect();
+            if (rect.top <= 150) {
+                activeIndex = i;
+                break;
+            }
+        }
+
+        document.querySelectorAll('.nav-item').forEach((item, index) => {
+            if (index === activeIndex) {
+                item.classList.add('nav-item--active');
+            } else {
+                item.classList.remove('nav-item--active');
+            }
+        });
+    }
+
+    container.addEventListener('scroll', updateNav);
+    window.addEventListener('scroll', updateNav);
+    updateNav();
+</script>

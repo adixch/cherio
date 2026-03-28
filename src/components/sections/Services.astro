@@ -1,0 +1,103 @@
+---
+import TextBlock from '../TextBlock.astro';
+
+const services = [
+    {
+        name: 'quality assurance',
+        description:
+            "Testers are essential in the software development process, helping to identify bugs, design issues, and usability issues prior to software release. But you don't have to worry about that anymore, because from now on you have us.",
+    },
+    {
+        name: 'ux/ui\ndesign',
+        description:
+            'Lorem ipsum dolor sit amet consectetur adipiscing elit habitasse, pretium scelerisque felis accumsan dis suspendisse pulvinar, consequat id turpis class nunc mollis etiam.',
+    },
+    {
+        name: 'cms managment',
+        description:
+            'Viverra convallis lacinia duis litora nascetur metus commodo platea leo posuere, praesent iaculis augue pretium netus odio habitant pellentesque pharetra aliquam tortor, habitasse inceptos curabitur ut ac turpis ornare vivamus sociis.',
+    },
+    {
+        name: 'software development',
+        description:
+            'Primis ultricies quam convallis et sociosqu facilisi molestie fermentum, dui accumsan taciti placerat diam in hac vulputate, mus risus ad montes erat facilisis natoque.',
+    },
+];
+---
+
+<section
+    id="services"
+    class="section flex w-full flex-col justify-center gap-8 md:flex-row md:pr-6 lg:gap-12 lg:pr-10 2xl:gap-32"
+>
+    <div id="services-text" class="basis-5/12">
+        <TextBlock
+            label="our services"
+            title={services[0].name}
+            description={services[0].description}
+            showOnMobile={false}
+        />
+    </div>
+
+    <div
+        id="services-grid"
+        class="grid grid-cols-1 content-center gap-8 md:basis-7/12 md:grid-cols-2 md:gap-2 lg:gap-4"
+    >
+        {
+            services.map((item, index) => (
+                <div
+                    data-service-index={index}
+                    data-service-name={JSON.stringify(item.name)}
+                    data-service-desc={item.description}
+                >
+                    <div
+                        class:list={[
+                            'service-item h-[200px] shadow-md max-md:pointer-events-none lg:h-[230px]',
+                            index === 0 && 'service-item--active',
+                        ]}
+                    >
+                        <div class="service-item__bg h-full bg-[url('/img/services.jpg')] bg-cover bg-center bg-no-repeat">
+                            <span class="service-item__title absolute right-0 bottom-0 w-full uppercase max-md:hidden">
+                                {item.name}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mt-5 md:hidden">
+                        <h2 class="text-block__headline leading-10 font-bold uppercase transition-all duration-300 ease-in-out">
+                            {item.name}
+                        </h2>
+                        <p class="text-block__desc mt-[10px] basis-1/2 transition-all duration-300 ease-in-out">
+                            {item.description}
+                        </p>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</section>
+
+<script>
+    const serviceItems = document.querySelectorAll('[data-service-index]');
+    const textBlock = document.getElementById('services-text');
+
+    serviceItems.forEach((item) => {
+        const serviceEl = item.querySelector('.service-item');
+        serviceEl?.addEventListener('click', () => {
+            // Update active state
+            document
+                .querySelectorAll('.service-item')
+                .forEach((el) => el.classList.remove('service-item--active'));
+            serviceEl.classList.add('service-item--active');
+
+            // Update text block
+            const title = JSON.parse(
+                (item as HTMLElement).dataset.serviceName || '""'
+            );
+            const desc = (item as HTMLElement).dataset.serviceDesc || '';
+
+            const headline = textBlock?.querySelector('.text-block__headline');
+            const description = textBlock?.querySelector('.text-block__desc');
+            if (headline) headline.textContent = title;
+            if (description) description.textContent = desc;
+        });
+    });
+</script>

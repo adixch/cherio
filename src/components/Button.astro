@@ -1,0 +1,71 @@
+---
+interface Props {
+    variant?: 'primary' | 'secondary';
+    size?: 'sm' | 'md' | 'lg';
+    type?: 'button' | 'submit';
+    ariaLabel?: string;
+    disabled?: boolean;
+    class?: string;
+    id?: string;
+}
+
+const {
+    variant = 'primary',
+    size = 'md',
+    type = 'button',
+    ariaLabel,
+    disabled = false,
+    class: className = '',
+    id,
+} = Astro.props;
+
+const isPrimary = variant === 'primary';
+---
+
+<button
+    type={type}
+    aria-label={ariaLabel}
+    disabled={disabled}
+    class:list={[
+        'btn',
+        `btn--${size}`,
+        variant === 'secondary' && 'btn--secondary',
+        className,
+    ]}
+    id={id}
+    data-bubbles
+>
+    <div class="btn-bubbles"></div>
+    {
+        isPrimary && (
+            <div class="btn-primary__border">
+                <>
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                </>
+            </div>
+        )
+    }
+    <slot />
+</button>
+
+<script>
+    document.querySelectorAll('[data-bubbles]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            const bubbles = (e.currentTarget as HTMLElement).querySelector(
+                '.btn-bubbles'
+            );
+            if (!bubbles) return;
+            bubbles.classList.remove('btn-bubbles--animate');
+            // Force reflow
+            void (bubbles as HTMLElement).offsetWidth;
+            bubbles.classList.add('btn-bubbles--animate');
+            setTimeout(
+                () => bubbles.classList.remove('btn-bubbles--animate'),
+                750
+            );
+        });
+    });
+</script>
