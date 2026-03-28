@@ -43,15 +43,7 @@ const canonicalURL = Astro.url;
         <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700&display=swap"
-            media="print"
-            onload="this.media='all'"
         />
-        <noscript>
-            <link
-                rel="stylesheet"
-                href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700&display=swap"
-            />
-        </noscript>
         <title>{title}</title>
 
         <script is:inline type="application/ld+json" set:html={JSON.stringify({
