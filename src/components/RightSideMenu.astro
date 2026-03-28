@@ -2,22 +2,25 @@
 const sectionIds = ['home', 'services', 'about', 'contact'];
 ---
 
-<div
+<nav
     id="right-menu"
+    aria-label="Section navigation"
     class="fixed top-15 right-5 z-40 hidden h-[calc(100vh-60px)] w-17.5 flex-col items-center justify-center gap-8 md:flex"
 >
     {
         sectionIds.map((id, index) => (
-            <div
+            <button
+                type="button"
                 class="gradient-link number-menu-item flex cursor-pointer flex-row items-center justify-center gap-3 font-bold transition-all duration-300 before:h-px before:w-0 before:bg-white before:transition-all before:duration-150 before:ease after:h-px after:w-0 after:bg-white after:transition-all after:duration-150 after:ease"
                 data-menu-index={index}
                 data-menu-section={id}
+                aria-label={`Go to section ${index + 1}`}
             >
                 {index + 1}
-            </div>
+            </button>
         ))
     }
-</div>
+</nav>
 
 <style>
     .number-menu-item--active,
