@@ -41,10 +41,10 @@ const canonicalURL = Astro.url;
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            rel="preload"
-            as="style"
+            rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700&display=swap"
-            onload="this.onload=null;this.rel='stylesheet'"
+            media="print"
+            onload="this.media='all'"
         />
         <noscript>
             <link
