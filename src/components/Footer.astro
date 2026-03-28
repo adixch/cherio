@@ -1,24 +1,39 @@
 ---
-
+const year = new Date().getFullYear();
 ---
 
-<footer class="z-50 flex w-full flex-col justify-center gap-4 text-lg lg:mb-4">
+<footer
+    class="text-muted z-50 mb-2 flex w-full flex-col justify-center gap-4 text-lg"
+>
     <div
         class="flex w-full flex-row justify-center gap-10 text-center md:justify-end"
     >
         <a
             href="/privacy-policy"
-            class="footer-link"
+            class="gradient-link text-base uppercase leading-5 transition-all duration-300"
             aria-label="privacy policy">privacy policy</a
         >
-        <a href="/cookie-policy" class="footer-link" aria-label="cookie policy"
+        <a href="/cookie-policy" class="gradient-link text-base uppercase leading-5 transition-all duration-300" aria-label="cookie policy"
             >cookie policy</a
         >
     </div>
-    <div class="divider"></div>
+    <div class="divider h-px w-full"></div>
     <div
         class="w-full text-center text-[16px] leading-10 tracking-[0.3em] uppercase"
     >
-        <span>all rights reserved by CHERIO<br />2023</span>
+        <span>all rights reserved by CHERIO<br />{year}</span>
     </div>
 </footer>
+
+<style>
+    .divider {
+        background: linear-gradient(
+            90deg,
+            var(--color-surface) 0%,
+            var(--color-theme-pink) 15%,
+            var(--color-theme-blue) 50%,
+            var(--color-theme-pink) 85%,
+            var(--color-surface) 100%
+        );
+    }
+</style>

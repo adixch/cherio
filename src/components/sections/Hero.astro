@@ -1,21 +1,22 @@
 ---
-import Button from '../Button.astro';
+import { Image } from 'astro:assets';
+import logo from '@/assets/logo.svg';
+import Button from '@/components/Button.astro';
 ---
 
 <section
     id="home"
     class="section flex h-screen w-full flex-col items-center justify-center gap-10"
 >
-    <div
-        class="h-[50px] w-full bg-[url('/img/logo.svg')] bg-contain bg-center bg-no-repeat md:h-[60px] lg:h-[80px] 2xl:h-[100px]"
-        role="img"
-        aria-label="Cherio logo"
-    >
-    </div>
+    <Image
+        src={logo}
+        alt="Cherio logo"
+        class="h-12.5 w-full object-contain md:h-15 lg:h-20 2xl:h-25"
+        loading="eager"
+    />
     <Button
         variant="primary"
         size="lg"
-        ariaLabel="go to contact section"
         id="hero-cta"
     >
         CONTACT US

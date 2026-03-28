@@ -1,5 +1,6 @@
 ---
-import '../styles/global.css';
+import '@/styles/global.css';
+import ogImage from '@/assets/og-image.webp';
 
 interface Props {
     title: string;
@@ -10,6 +11,8 @@ const {
     title,
     description = "We're not some big fancy company. Just a small group of ambitious people with one goal: Creating the best damn products on earth.",
 } = Astro.props;
+
+const canonicalURL = Astro.url;
 ---
 
 <!doctype html>
@@ -20,7 +23,45 @@ const {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#141418" />
         <meta name="description" content={description} />
+        <link rel="canonical" href={canonicalURL} />
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={ogImage.src} />
+        <meta property="og:url" content={canonicalURL} />
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage.src} />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="preload"
+            as="style"
+            href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700&display=swap"
+            onload="this.onload=null;this.rel='stylesheet'"
+        />
+        <noscript>
+            <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700&display=swap"
+            />
+        </noscript>
         <title>{title}</title>
+
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Cherio",
+            "url": canonicalURL,
+            "description": description,
+            "logo": ogImage.src,
+        })} />
     </head>
     <body>
         <slot />

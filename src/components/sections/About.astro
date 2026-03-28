@@ -1,5 +1,11 @@
 ---
-import TextBlock from '../TextBlock.astro';
+import { Image } from 'astro:assets';
+import TextBlock from '@/components/TextBlock.astro';
+
+import adiImg from '@/assets/avatars/adi.png';
+import matiImg from '@/assets/avatars/mati.png';
+import zuzaImg from '@/assets/avatars/zuza.png';
+import patrickImg from '@/assets/avatars/patrick.png';
 
 const team = [
     {
@@ -7,62 +13,68 @@ const team = [
         title: 'developer',
         description:
             'Former programmer whose passion is testing. Main competences are: QA, JS, SQL and analytics',
-        img: '/img/avatars/adi.png',
+        img: adiImg,
     },
     {
         name: 'Mateusz',
         title: 'quality assurance',
         description:
             'Former programmer whose passion is testing. Main competences are: QA, JS, SQL and analytics',
-        img: '/img/avatars/mati.png',
+        img: matiImg,
     },
     {
         name: 'Zuza',
         title: 'ux/ui designer',
         description:
             'Former programmer whose passion is testing. Main competences are: QA, JS, SQL and analytics',
-        img: '/img/avatars/zuza.png',
+        img: zuzaImg,
     },
     {
         name: 'Patryk',
         title: 'seo specialist',
         description:
             'Former programmer whose passion is testing. Main competences are: QA, JS, SQL and analytics',
-        img: '/img/avatars/patrick.png',
+        img: patrickImg,
     },
 ];
 ---
 
 <section
     id="about"
-    class="section flex w-full flex-col gap-8 md:flex-row md:justify-center md:pr-6 lg:gap-12 lg:pr-10"
+    class="section flex w-full flex-col gap-8 lg:flex-row lg:justify-center lg:gap-16"
 >
     <div
-        class="team-grid order-2 justify-items-center overflow-auto overflow-y-hidden md:order-1 md:basis-7/12 md:overflow-visible"
+        class="team-grid grid content-center order-2 justify-items-center overflow-auto overflow-y-hidden md:overflow-visible lg:order-1 lg:basis-1/2"
     >
         {
             team.map((member, index) => (
                 <div
                     class:list={[
-                        'team-member team-member-gradient md:cursor-pointer',
-                        index < 2 && 'self-end',
+                        'team-member-wrapper',
+                        index < 2 && 'lg:self-end',
                         index % 2 !== 0
-                            ? 'md:top-14 2xl:top-20'
-                            : 'justify-self-end',
+                            ? 'lg:top-14 2xl:top-20'
+                            : 'lg:justify-self-end',
                     ]}
                     data-team-member
                 >
-                    <div class="team-card bg-surface flex h-full flex-col overflow-hidden">
-                        <img
-                            src={member.img}
-                            alt={`${member.name} - ${member.title}`}
-                            class="team-card__image max-h-[60%] object-contain object-top pt-5 lg:max-h-[65%]"
-                            loading="lazy"
-                        />
-                        <div class="team-card__info px-6">
-                            <h3 class="team-card__name">{member.name}</h3>
-                            <span class="team-card__title">{member.title}</span>
-                            <p class="mt-2 text-sm">{member.description}</p>
+                    <div class="team-member team-member-gradient relative h-full w-full md:cursor-pointer">
+                        <div class="team-card relative rounded-[20px] bg-surface flex h-full flex-col overflow-hidden">
+                            <Image
+                                src={member.img}
+                                alt={`${member.name} - ${member.title}`}
+                                class="team-card__image h-auto max-h-[60%] w-full object-contain object-top pt-5 lg:max-h-[65%]"
+                                widths={[200, 400]}
+                                sizes="200px"
+                                loading="lazy"
+                            />
+                            <div class="team-card__info px-6">
+                                <h3 class="text-xl font-bold leading-7">{member.name}</h3>
+                                <span class="text-[13px] uppercase leading-5">
+                                    {member.title}
+                                </span>
+                                <p class="mt-2 text-sm">{member.description}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,43 +87,339 @@ const team = [
         title="who we are?"
         description="We're not some big fancy company. Just a small group of ambitious people with one goal: Creating the best damn products on earth."
         showOnMobile={true}
-        class="flex flex-col justify-center gap-4 md:order-2 md:basis-5/12"
+        class="flex flex-col justify-center gap-4 lg:order-2 lg:basis-1/2"
     />
 </section>
 
-<script>
-    // Animated gradient border on hover (replaces react-parallax-tilt + requestAnimationFrame approach)
-    let angle = 0;
-    let animId: number | undefined;
-    let lastTime: number | undefined;
-
-    function animateGradient(time: number) {
-        if (lastTime != null) {
-            const delta = time - lastTime;
-            angle += delta * 0.1;
-            if (angle >= 360) angle = 0;
-            document.documentElement.style.setProperty(
-                '--angle',
-                `${angle}deg`
-            );
-        }
-        lastTime = time;
-        animId = requestAnimationFrame(animateGradient);
+<style>
+    .team-grid {
+        scrollbar-width: none;
     }
 
-    document.querySelectorAll('[data-team-member]').forEach((el) => {
-        el.addEventListener('mouseenter', () => {
-            if (!animId) {
-                lastTime = undefined;
-                animId = requestAnimationFrame(animateGradient);
-            }
-        });
+    .team-grid::-webkit-scrollbar {
+        display: none;
+    }
 
-        el.addEventListener('mouseleave', () => {
-            if (animId) {
-                cancelAnimationFrame(animId);
-                animId = undefined;
+    .team-card {
+        background-clip: padding-box;
+    }
+
+    .team-member-wrapper {
+        position: relative;
+        width: 250px;
+        height: 290px;
+    }
+
+    @media (max-width: 767px) {
+        .team-grid {
+            grid-auto-flow: column;
+            gap: 16px;
+            margin-right: -16px;
+            padding-right: 16px;
+            margin-left: -16px;
+            padding-left: 16px;
+        }
+
+        .team-member-wrapper {
+            width: 260px;
+            height: 380px;
+        }
+
+        .team-member {
+            border: 1px solid transparent;
+        }
+
+        .team-member-gradient::after {
+            position: absolute;
+            top: -1px;
+            bottom: -1px;
+            left: -1px;
+            right: -1px;
+            background: linear-gradient(
+                to bottom right,
+                var(--color-theme-pink) 0%,
+                var(--color-theme-blue) 100%
+            );
+            content: '';
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        .team-card::after,
+        .team-card::before {
+            display: none;
+        }
+
+        .team-member .team-card__image {
+            max-height: 50%;
+        }
+
+        .team-card__info {
+            padding-top: 10px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .team-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .team-card::before,
+        .team-card::after {
+            content: '';
+            width: 2rem;
+            height: 2rem;
+            border: 1px solid #fff;
+            position: absolute;
+            z-index: 2;
+            opacity: 0.3;
+            transition: 0.3s;
+        }
+
+        .team-member-wrapper:hover .team-card::before,
+        .team-member-wrapper:hover .team-card::after {
+            width: calc(100% - 24px);
+            height: calc(100% - 24px);
+        }
+
+        .team-card::before {
+            top: 12px;
+            right: 12px;
+            border-bottom-width: 0;
+            border-left-width: 0;
+        }
+
+        .team-card::after {
+            bottom: 12px;
+            left: 12px;
+            border-top-width: 0;
+            border-right-width: 0;
+        }
+
+        .team-member-gradient {
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .team-member-wrapper .team-card__info {
+            top: 70%;
+            position: absolute;
+            transition:
+                top 0.3s ease,
+                height 0.2s ease 0.05s,
+                padding 0.3s ease;
+            background-color: transparent;
+            height: 60px;
+            overflow: hidden;
+        }
+
+        .team-member-wrapper:hover .team-card__info {
+            top: 0;
+            height: 100%;
+            padding-top: 20px;
+        }
+
+        .team-member-wrapper:hover img {
+            filter: grayscale(100%);
+            opacity: 0.1;
+            transition: all 0.2s ease 0.15s;
+        }
+
+        .team-member-wrapper img {
+            transition: all 0.2s ease;
+        }
+
+        .team-member-wrapper:hover .team-member-gradient::before,
+        .team-member-wrapper:hover .team-member-gradient::after {
+            opacity: 1;
+        }
+
+        .team-member-gradient::before {
+            content: '';
+            position: absolute;
+            border-radius: 20px;
+            background: linear-gradient(
+                var(--gradient-angle),
+                var(--color-theme-pink),
+                var(--color-theme-blue) 50%,
+                var(--color-theme-pink)
+            );
+            z-index: -1;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.2s;
+        }
+
+        .team-member-wrapper:hover .team-member-gradient::before {
+            animation: gradient-rotate 3s linear infinite;
+        }
+
+        .team-member-gradient::after {
+            position: absolute;
+            content: '';
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            z-index: -2;
+            filter: blur(38px);
+            background: linear-gradient(
+                var(--gradient-angle),
+                var(--color-theme-pink),
+                var(--color-theme-blue) 50%,
+                var(--color-theme-pink)
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease 0.2s;
+            border-radius: 26px;
+        }
+
+        .team-member-wrapper:hover .team-member-gradient::after {
+            opacity: 0.5;
+            animation: gradient-rotate 3s linear infinite;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .team-grid {
+            grid-template-rows: 2fr 2.8fr;
+            row-gap: 30px;
+        }
+
+        .team-member-wrapper {
+            width: 190px;
+            height: 250px;
+        }
+
+        .team-card__info h3 {
+            font-size: 23px;
+        }
+
+        .team-card__info span {
+            font-size: 15px;
+            line-height: 19px;
+        }
+
+        .team-member-wrapper:hover .team-card::before,
+        .team-member-wrapper:hover .team-card::after {
+            width: calc(100% - 28px);
+            height: calc(100% - 28px);
+        }
+
+        .team-card::before {
+            top: 14px;
+            right: 14px;
+        }
+
+        .team-card::after {
+            bottom: 14px;
+            left: 14px;
+        }
+    }
+
+    @media (min-width: 1280px) {
+        .team-member-wrapper {
+            width: 210px;
+            height: 270px;
+        }
+
+        .team-member-wrapper:hover .team-card__info {
+            padding-top: 32px;
+        }
+
+        .team-card__info {
+            padding: 0px 32px;
+        }
+    }
+
+    @media (min-height: 900px) and (min-width: 1024px) {
+        .team-grid {
+            column-gap: 0px;
+            row-gap: 40px;
+        }
+
+        .team-member-wrapper {
+            width: 260px;
+            height: 320px;
+        }
+
+        .team-member-wrapper:hover .team-card::before,
+        .team-member-wrapper:hover .team-card::after {
+            width: calc(100% - 32px);
+            height: calc(100% - 32px);
+        }
+
+        .team-card::before {
+            top: 16px;
+            right: 16px;
+        }
+
+        .team-card::after {
+            bottom: 16px;
+            left: 16px;
+        }
+    }
+</style>
+
+<script>
+    if (
+        window.matchMedia('(pointer: fine)').matches &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+        const TILT_MAX = 25;
+        const PERSPECTIVE = 800;
+        const RETURN_TRANSITION = 'transform 0.5s ease-out';
+
+        document.querySelectorAll('[data-team-member]').forEach((el) => {
+            const wrapper = el as HTMLElement;
+            const card = wrapper.querySelector('.team-member') as HTMLElement;
+            if (!card) return;
+            let rafId: number | null = null;
+
+            function applyTilt(e: MouseEvent) {
+                const rect = wrapper.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+
+                const rotateX = (TILT_MAX - y * TILT_MAX * 2).toFixed(2);
+                const rotateY = (x * TILT_MAX * 2 - TILT_MAX).toFixed(2);
+
+                card.style.transform = `perspective(${PERSPECTIVE}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             }
+
+            wrapper.addEventListener('mouseenter', () => {
+                card.style.willChange = 'transform';
+                card.style.transition = 'none';
+            });
+
+            wrapper.addEventListener('mousemove', (e) => {
+                if (rafId !== null) cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(() => {
+                    rafId = null;
+                    applyTilt(e);
+                });
+            });
+
+            wrapper.addEventListener('mouseleave', () => {
+                if (rafId !== null) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+                card.style.transition = RETURN_TRANSITION;
+                card.style.transform = '';
+                card.addEventListener(
+                    'transitionend',
+                    () => {
+                        card.style.willChange = '';
+                        card.style.transition = 'none';
+                    },
+                    { once: true }
+                );
+            });
         });
-    });
+    }
 </script>

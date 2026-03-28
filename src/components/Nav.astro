@@ -12,25 +12,32 @@ const navItems = [
     class="fixed z-40 flex w-full items-center py-5 leading-5 uppercase transition-all duration-300 ease-in-out md:tracking-[0.15rem]"
 >
     <nav
-        class="w-full px-4 text-[14px] md:ml-0 md:h-auto md:px-5 md:text-[16px]"
+        class="mx-auto w-full max-w-480 px-4 text-[14px] md:h-auto md:px-5 md:text-[16px]"
     >
         <ul class="flex flex-row items-center justify-between md:gap-8">
             {
                 navItems.map((item, index) => (
                     <li
                         class:list={[
-                            'nav-item relative cursor-pointer',
+                            'gradient-link nav-item relative cursor-pointer font-medium',
                             index === 0 && '',
                             index === 1 && 'md:flex md:grow md:justify-end',
                             index === 2 && 'md:grow',
-                            index === 3 && 'text-right md:w-[160px]',
+                            index === 3 && 'text-right md:w-40',
                         ]}
                         data-section={item.section}
                         data-index={index}
                     >
-                        <a class="cursor-pointer" data-nav-link={item.section}>
+                        <a
+                            href={`#${item.section}`}
+                            class="cursor-pointer"
+                            data-nav-link={item.section}
+                            aria-label={
+                                index === 0 ? 'Cherio - Home' : undefined
+                            }
+                        >
                             {index === 0 ? (
-                                <div class="h-5 bg-[url('/img/logo_mobile.png')] bg-contain bg-center bg-no-repeat max-[640px]:w-[32px] sm:w-[160px] sm:bg-[url('/img/logo.svg')]" />
+                                <div class="h-5 bg-[url('/img/logo_mobile.webp')] bg-contain bg-center bg-no-repeat max-[640px]:w-8 sm:w-40 sm:bg-[url('/img/logo.svg')]" />
                             ) : (
                                 item.name
                             )}
@@ -42,15 +49,27 @@ const navItems = [
     </nav>
 </header>
 
+<style>
+    .nav-item {
+        transition: color 0.5s ease-in-out 0.2s;
+        animation-duration: 1s;
+    }
+
+    .nav-item--active {
+        color: rgba(255, 255, 255, 0) !important;
+        animation-duration: 2s !important;
+    }
+</style>
+
 <script>
     const header = document.getElementById('nav-header')!;
     const navLinks = document.querySelectorAll('[data-nav-link]');
     const sections = document.querySelectorAll('.section');
     const container = document.getElementById('container')!;
 
-    // Navigation click handling
     navLinks.forEach((link) => {
-        link.addEventListener('click', () => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
             const sectionId = (link as HTMLElement).dataset.navLink!;
             const target = document.getElementById(sectionId);
             if (!target) return;
@@ -63,18 +82,15 @@ const navItems = [
         });
     });
 
-    // Active state + backdrop on scroll
     function updateNav() {
         const scrollY = container.scrollTop || window.scrollY;
 
-        // Backdrop
         if (scrollY > 200) {
             header.classList.add('bg-[#00000070]', 'backdrop-blur-sm');
         } else {
             header.classList.remove('bg-[#00000070]', 'backdrop-blur-sm');
         }
 
-        // Active section detection
         const sectionElements = Array.from(sections);
         let activeIndex = 0;
 
@@ -95,7 +111,7 @@ const navItems = [
         });
     }
 
-    container.addEventListener('scroll', updateNav);
-    window.addEventListener('scroll', updateNav);
+    const scrollTarget = container.scrollHeight > container.clientHeight ? container : window;
+    scrollTarget.addEventListener('scroll', updateNav);
     updateNav();
 </script>

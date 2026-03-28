@@ -4,6 +4,7 @@ interface Props {
     title: string;
     description: string;
     showOnMobile?: boolean;
+    headingLevel?: 'h2' | 'div';
     class?: string;
 }
 
@@ -12,21 +13,23 @@ const {
     title,
     description,
     showOnMobile = true,
+    headingLevel = 'h2',
     class: className = '',
 } = Astro.props;
+
+const Heading = headingLevel;
 ---
 
 <div class:list={['text-block flex flex-col gap-4', className]}>
     <div class="flex basis-1/2 flex-col justify-end gap-8 md:gap-4">
-        <label class="text-block__label">{label}</label>
-        <h2
+        <span class="text-block__label uppercase">{label}</span>
+        <Heading
             class:list={[
-                'text-block__headline leading-10 font-bold uppercase transition-all duration-300 ease-in-out',
+                'text-block__headline font-bold whitespace-pre-wrap uppercase transition-all duration-300 ease-in-out',
                 !showOnMobile && 'max-md:hidden',
             ]}
-        >
-            {title}
-        </h2>
+            set:text={title}
+        />
     </div>
     <p
         class:list={[
@@ -37,3 +40,47 @@ const {
         {description}
     </p>
 </div>
+
+<style>
+    @media (max-width: 767px) {
+        .text-block__label {
+            font-size: max(1.25rem, 5vw);
+            border-bottom: 1px solid;
+            border-image: linear-gradient(
+                    to right,
+                    var(--color-theme-pink),
+                    var(--color-theme-blue)
+                )
+                1;
+            padding-bottom: 5px;
+        }
+
+        .text-block__headline {
+            font-size: max(2rem, 7vw);
+            line-height: 1;
+        }
+
+        .text-block__desc {
+            font-size: max(0.875rem, 4vw);
+        }
+    }
+
+    @media (min-width: 768px) {
+        .text-block__label,
+        .text-block__desc {
+            font-size: 1.8vw;
+        }
+
+        .text-block__headline {
+            font-size: 3.5vw;
+            line-height: 3.5vw;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .text-block__label,
+        .text-block__desc {
+            font-size: 1.3vw;
+        }
+    }
+</style>

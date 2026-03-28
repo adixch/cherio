@@ -14,9 +14,9 @@ const socials = [
 ---
 
 <div
-    class="fixed top-[60px] left-5 z-40 hidden h-[calc(100vh-60px)] flex-col items-center justify-center gap-8 md:flex"
+    class="fixed top-15 left-5 z-40 hidden h-[calc(100vh-60px)] flex-col items-center justify-center gap-8 md:flex"
 >
-    <hr class="w-[16px] rotate-90" />
+    <hr class="w-4 rotate-90" />
     {
         socials.map((item) => (
             <a
@@ -24,11 +24,11 @@ const socials = [
                 target="_blank"
                 rel="noreferrer"
                 aria-label={item.name}
-                class="social-link bg-surface-light flex h-[36px] w-[36px] items-center justify-center rounded-full"
+                class="bg-surface-light flex h-9 w-9 items-center justify-center rounded-full transition-all duration-200 hover:scale-150"
             >
                 <Fragment set:html={item.icon} />
             </a>
         ))
     }
-    <hr class="w-[16px] rotate-90" />
+    <hr class="w-4 rotate-90" />
 </div>

@@ -1,14 +1,14 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Particles from '../components/Particles.astro';
-import Background from '../components/Background.astro';
-import Nav from '../components/Nav.astro';
-import SocialMenu from '../components/SocialMenu.astro';
-import RightSideMenu from '../components/RightSideMenu.astro';
-import Hero from '../components/sections/Hero.astro';
-import Services from '../components/sections/Services.astro';
-import About from '../components/sections/About.astro';
-import Contact from '../components/sections/Contact.astro';
+import Layout from '@/layouts/Layout.astro';
+import Particles from '@/components/Particles.astro';
+import Background from '@/components/Background.astro';
+import Nav from '@/components/Nav.astro';
+import SocialMenu from '@/components/SocialMenu.astro';
+import RightSideMenu from '@/components/RightSideMenu.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Services from '@/components/sections/Services.astro';
+import About from '@/components/sections/About.astro';
+import Contact from '@/components/sections/Contact.astro';
 ---
 
 <Layout title="Cherio">
@@ -20,7 +20,7 @@ import Contact from '../components/sections/Contact.astro';
 
         <main
             id="container"
-            class="z-30 flex w-full flex-row flex-wrap items-center justify-start overflow-y-scroll scroll-smooth px-4 md:px-20 2xl:px-[180px]"
+            class="z-30 mx-auto flex w-full max-w-480 flex-row flex-wrap items-center justify-start overflow-y-scroll scroll-smooth px-4 md:pr-24 md:pl-20"
         >
             <Hero />
             <Services />
@@ -33,12 +33,11 @@ import Contact from '../components/sections/Contact.astro';
 </Layout>
 
 <script>
-    // Desktop: wheel-based section snapping
     const container = document.getElementById('container')!;
     const sections = container.querySelectorAll('.section');
     let isScrolling = false;
 
-    if (window.innerWidth >= 768) {
+    if (window.innerWidth >= 1024) {
         container.addEventListener(
             'wheel',
             (e) => {

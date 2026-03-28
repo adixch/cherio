@@ -23,7 +23,7 @@ const {
 {
     element === 'input' ? (
         <input
-            class="theme-input"
+            class="theme-input w-full rounded border border-transparent px-2.5 py-1.5 text-white transition-all duration-500"
             id={id}
             type={type}
             name={name}
@@ -32,7 +32,7 @@ const {
         />
     ) : (
         <textarea
-            class="theme-input"
+            class="theme-input w-full rounded border border-transparent px-2.5 py-1.5 text-white transition-all duration-500"
             id={id}
             name={name}
             placeholder={placeholder}
@@ -42,3 +42,28 @@ const {
         />
     )
 }
+
+<style>
+    .theme-input {
+        background-color: var(--color-input-bg);
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+        background-image:
+            linear-gradient(var(--color-input-bg), var(--color-input-bg)),
+            linear-gradient(
+                to bottom right,
+                var(--color-theme-pink),
+                var(--color-theme-blue)
+            );
+    }
+
+    .theme-input:focus-visible {
+        outline: none !important;
+        box-shadow:
+            0 0 0px #00ffee3d,
+            2px 2px 10px #00ffee3d,
+            -2px -2px 10px #bb00ff38,
+            3px 3px 16px #00ffee3d,
+            -3px -3px 16px #bb00ff38;
+    }
+</style>
